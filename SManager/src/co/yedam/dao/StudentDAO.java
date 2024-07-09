@@ -1,7 +1,6 @@
 package co.yedam.dao;
 
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +72,55 @@ public class StudentDAO extends DAO {
 		return false; // 비정상처리.
 
 	}// end insertStudent
+
+	// 수정기능.
+	public boolean updateStudent(StudentVO svo) {
+		// 쿼리
+		String sql = "UPDATE tbl_student ";
+		sql += "SET std_name = ? ";
+		sql += ", std_phone = ? ";
+		sql += ", address = ? ";
+		sql += ", birth_date = ? ";
+		sql += "WHERE std_no = ? ";
+		// 커넥션
+		conn = getConn(); // DAO에서 상속받았기 때문에 사용가능하다.
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, svo.getStdName());
+			psmt.setString(2, svo.getStdPhone());
+			psmt.setString(3, svo.getAddress());
+			psmt.setString(4, svo.getBirthDate());
+			psmt.setString(5, svo.getStdNo());
+			int r = psmt.executeUpdate();
+			if (r > 0) {
+				return true; // 정상처리.
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false; // 비정상처리.
+
+	}// end updateStudent
 	
-	// 수정
+	// 삭제기능.
+	public boolean deleteStudent(StudentVO svo) {
+		// 쿼리
+		String sql = "DELETE FROM tbl_student ";
+		sql += "WHERE std_no = ? ";
+		// 커넥션
+		conn = getConn(); // DAO에서 상속받았기 때문에 사용가능하다.
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, svo.getStdNo());
+			int r = psmt.executeUpdate();
+			if (r > 0) {
+				return true; // 정상처리.
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false; // 비정상처리.
+
+	}// end deleteStudent
 
 }// end class
