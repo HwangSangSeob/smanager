@@ -94,20 +94,28 @@ public class StudentControl {
 	}// end addStudent
 
 	// 수정
-	private void modStudent() {
-		System.out.print("학생 번호 > ");
-		String sno = sc.nextLine(); // 로컬변수
+	void modStudent() {
+		String sno;
+		while (true) {
+			System.out.print("변경할 학생 번호 > ");
+			sno = sc.nextLine(); // 로컬변수
+			if (sdao.selectExists(sno) == 1) {
+				// 학생번호 존재
+				System.out.println("찾는 학생번호가 없음 학생번호 다시 입력하세요.");
+				break;
+			}
+		}
 
-		System.out.print("학생 이름 > ");
+		System.out.print("변경할 학생 이름 > ");
 		String sname = sc.nextLine();
 
-		System.out.print("학생 연락처 > ");
+		System.out.print("변경할 학생 연락처 > ");
 		String sphone = sc.nextLine();
 
-		System.out.print("학생 주소 > ");
+		System.out.print("변경할 학생 주소 > ");
 		String address = sc.nextLine();
 
-		System.out.print("학생 생년월일 (예 : 1999-01-01) > ");
+		System.out.print("변경할 학생 생년월일 (예 : 1999-01-01) > ");
 		String birthdate = sc.nextLine();
 
 		StudentVO std = new StudentVO();
@@ -116,31 +124,31 @@ public class StudentControl {
 		std.setStdPhone(sphone);
 		std.setAddress(address);
 		std.setBirthDate(birthdate);
-		
+
 		// 수정기능 호출
 		if (sdao.updateStudent(std)) {
 			System.out.println("수정 완료!");
 		} else {
-			System.out.println("처리중 예외발생!");
+			System.out.println("수정할 학생정보 없음!");
 		}
 
 	}// end modStudent
 
 	// 삭제
-	private void delStudent() {
+	void delStudent() {
 		System.out.print("삭제할 학생 번호 > ");
 		String sno = sc.nextLine(); // 로컬변수
 
 		StudentVO std = new StudentVO();
 		std.setStdNo(sno);
-		
+
 		// 삭제기능 호출
 		if (sdao.deleteStudent(std)) {
 			System.out.println("삭제 완료!");
 		} else {
 			System.out.println("처리중 예외발생!");
 		}
-		
+
 	}// end delStudent
 
 }// end class

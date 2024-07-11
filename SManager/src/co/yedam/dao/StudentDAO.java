@@ -74,6 +74,29 @@ public class StudentDAO extends DAO {
 	}// end insertStudent
 
 	// 수정기능.
+
+	// 단건조회.(학생이 있는지 확인하기)
+	public int selectExists(String sno) {
+		// 쿼리
+		String sql = "SELECT COUNT(1) FROM tbl_student";
+		sql += " WHERE std_no = ?";
+		// 커넥션
+		conn = getConn(); // DAO에서 상속받았기 때문에 사용가능하다.
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, sno);
+			rs = psmt.executeQuery();
+			while (rs.next()) {
+				return rs.getInt(1); // 1번은 가지고 온 첫번째 컬럼을 가지고 온다.
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+
+	}
+
+	// 실제 수정 기능.
 	public boolean updateStudent(StudentVO svo) {
 		// 쿼리
 		String sql = "UPDATE tbl_student ";
@@ -92,7 +115,7 @@ public class StudentDAO extends DAO {
 			psmt.setString(4, svo.getBirthDate());
 			psmt.setString(5, svo.getStdNo());
 			int r = psmt.executeUpdate();
-			if (r > 0) {
+			if (r == 1) {
 				return true; // 정상처리.
 			}
 		} catch (SQLException e) {
@@ -101,7 +124,7 @@ public class StudentDAO extends DAO {
 		return false; // 비정상처리.
 
 	}// end updateStudent
-	
+
 	// 삭제기능.
 	public boolean deleteStudent(StudentVO svo) {
 		// 쿼리
