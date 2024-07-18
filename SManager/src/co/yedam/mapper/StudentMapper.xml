@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.yedam.mapper.StudentMapper">
+
+	<!-- select는 결과가 ResultSet 타입으로 나옴 -->
+	<select id="studentList" resultType="co.yedam.vo.StudentVO">
+		SELECT * FROM tbl_student ORDER BY std_no
+	</select>
+	
+	<!-- 매개 변수는 parameterType 받아짐 -->
+	<insert id="insertStudent" parameterType="co.yedam.vo.StudentVO">
+		INSERT INTO tbl_student(std_no, std_name, std_phone) 
+		VALUES (#{stdNo},#{stdName},#{stdPhone})
+	</insert>
+	
+	
+	<update id="updateStudent" parameterType="co.yedam.vo.StudentVO">
+		UPDATE tbl_student
+		SET std_phone = #{stdPhone}
+		WHERE std_no = #{stdNo}
+	</update>
+
+</mapper>
